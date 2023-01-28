@@ -30,7 +30,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
       _currentPassword = '',
       _newPassword = '';
 
-  final List<String> _address = List.generate(6, (_) => '');
+  final List<String> _address = List.generate(6, (index) => '');
 
   late bool _somethingChanged;
 
@@ -442,13 +442,17 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                         .doc(_auth.currentUser!.uid)
                                         .update({'username': _newUsername});
                                   }
-                                  if (_phoneNumber.isNotEmpty) {
+                                  if (_phoneNumber.isNotEmpty &&
+                                      _phoneNumber !=
+                                          _userData['phoneNumber']) {
                                     await _firestore
                                         .collection('users')
                                         .doc(_auth.currentUser!.uid)
                                         .update({'phoneNumber': _phoneNumber});
                                   }
-                                  if (_address.isNotEmpty) {
+                                  if (_address.join().isNotEmpty &&
+                                      _address.join(', ') !=
+                                          _userData['address']) {
                                     await _firestore
                                         .collection('users')
                                         .doc(_auth.currentUser!.uid)
