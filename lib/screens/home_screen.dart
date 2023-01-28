@@ -57,12 +57,13 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 children: [
                   Text(
-                      "Welcome $_username!\n\nYou're email is ${_auth.currentUser!.emailVerified ? 'verified' : 'not verified'}",
+                      "Welcome $_username!${_auth.currentUser != null ? "\n\nYou're email is ${_auth.currentUser!.emailVerified ? 'verified' : 'not verified'}" : ''}",
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                           fontSize: 24, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 35),
-                  if (!_auth.currentUser!.emailVerified)
+                  if (_auth.currentUser != null &&
+                      !_auth.currentUser!.emailVerified)
                     Column(
                       children: [
                         Row(
@@ -85,6 +86,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                   });
                                 } catch (e) {
                                   setState(() => isLoading = false);
+                                  if (e is FirebaseAuthException &&
+                                      e.code == 'too-many-requests') {
+                                    setState(() => isLoading = false);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content: Text(
+                                                'Too many requests. Please try again later.')));
+                                    return;
+                                  }
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                           content: Text('An error occured!')));

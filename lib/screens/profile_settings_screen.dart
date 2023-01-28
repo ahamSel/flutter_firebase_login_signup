@@ -93,7 +93,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                             const SizedBox(width: 60),
                             Expanded(
                               child: Text(
-                                '''${_userData['username'] ?? ''}\n${_auth.currentUser!.email}${RegExp(r"[a-zA-Z0-9]").hasMatch(_userData['address'].toString()) ? "\n${_userData['address']}" : ''}${_userData['phoneNumber'] != '' ? "\n${_userData['phoneNumber']}" : ''}
+                                '''${_userData['username'] ?? ''}\n${_auth.currentUser?.email}${RegExp(r"[a-zA-Z0-9]").hasMatch(_userData['address'].toString()) ? "\n${_userData['address']}" : ''}${_userData['phoneNumber'] != '' ? "\n${_userData['phoneNumber']}" : ''}
                           ''',
                                 style: const TextStyle(
                                   fontSize: 17,
