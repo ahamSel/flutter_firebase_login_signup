@@ -590,6 +590,12 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                             await GoogleSignIn().signOut();
                                             await _auth.currentUser!
                                                 .delete()
+                                                .then((value) => ScaffoldMessenger
+                                                        .of(_scaffoldKey
+                                                            .currentContext!)
+                                                    .showSnackBar(const SnackBar(
+                                                        content: Text(
+                                                            'Account deleted!'))))
                                                 .then((value) => Navigator
                                                     .pushReplacementNamed(
                                                         _scaffoldKey
