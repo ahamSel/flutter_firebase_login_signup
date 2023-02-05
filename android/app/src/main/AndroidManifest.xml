@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.aham.flutter_firebase_login_signup.flutter_firebase_login_signup">
    <application
-        android:label="flutter_firebase_login_signup"
+        android:label="Auth And DB With Firebase"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_auth_and_db_with_firebase">
         <activity
             android:name=".MainActivity"
             android:exported="true"
