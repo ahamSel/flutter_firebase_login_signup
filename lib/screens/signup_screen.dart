@@ -18,7 +18,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  bool isLoading = false;
+  bool isLoading = false, isObscure = true;
 
   late String _username, _email, _password = '';
 
@@ -89,10 +89,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         return null;
                       },
                       onChanged: (value) => _password = value,
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                      obscureText: isObscure,
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
                         labelText: 'Password',
+                        suffixIcon: Padding(
+                          padding: const EdgeInsets.only(right: 7),
+                          child: IconButton(
+                            icon: Icon(isObscure
+                                ? Icons.visibility
+                                : Icons.visibility_off),
+                            onPressed: () {
+                              setState(() => isObscure = !isObscure);
+                            },
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -103,10 +114,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         }
                         return null;
                       },
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                      obscureText: isObscure,
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
                         labelText: 'Confirm Password',
+                        suffixIcon: Padding(
+                          padding: const EdgeInsets.only(right: 7),
+                          child: IconButton(
+                            icon: Icon(isObscure
+                                ? Icons.visibility
+                                : Icons.visibility_off),
+                            onPressed: () {
+                              setState(() => isObscure = !isObscure);
+                            },
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 35),
@@ -116,20 +138,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           _formKey.currentState!.save();
                           setState(() => isLoading = true);
                           try {
-                            await _firestore
-                                .collection('users')
-                                .where('username', isEqualTo: _username)
-                                .get()
-                                .then((value) {
-                              if (value.docs.isNotEmpty) {
-                                setState(() => isLoading = false);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text(
-                                            'The username is already in use by another account.')));
-                                return;
-                              }
-                            });
+                            final QuerySnapshot usernamesSnapshot =
+                                await _firestore
+                                    .collection('users')
+                                    .where('username', isEqualTo: _username)
+                                    .get();
+                            if (usernamesSnapshot.docs.isNotEmpty) {
+                              setState(() => isLoading = false);
+                              Future.delayed(
+                                  const Duration(),
+                                  () => ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                          content: Text(
+                                              'The username is already in use by another account.'))));
+                              return;
+                            }
                             List<String> signInMethods =
                                 await _auth.fetchSignInMethodsForEmail(_email);
                             if (signInMethods.contains('google.com') &&
@@ -239,11 +262,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             accessToken: googleAuth?.accessToken,
                           ))
                               .then((result) async {
-                            final QuerySnapshot resultQuery = await _firestore
-                                .collection('users')
-                                .where('email', isEqualTo: result.user?.email)
-                                .get();
-                            if (resultQuery.docs.isEmpty) {
+                            final QuerySnapshot emailsSnapshot =
+                                await _firestore
+                                    .collection('users')
+                                    .where('email',
+                                        isEqualTo: result.user?.email)
+                                    .get();
+                            if (emailsSnapshot.docs.isEmpty) {
                               await _firestore
                                   .collection('users')
                                   .doc(result.user?.uid)
@@ -297,6 +322,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   TextStyle(fontSize: 16, color: Colors.black)),
                         ],
                       ),
+                    ),
+                    const SizedBox(height: 40),
+                    ElevatedButton(
+                      onPressed: () => Navigator.pushNamed(context, '/users'),
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                        ),
+                        minimumSize:
+                            MaterialStateProperty.all(const Size(100, 50)),
+                        shadowColor:
+                            MaterialStateProperty.all(Colors.transparent),
+                      ),
+                      child:
+                          const Text('Users', style: TextStyle(fontSize: 16)),
                     )
                   ],
                 ),

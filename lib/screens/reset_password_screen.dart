@@ -159,6 +159,23 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       child: const Text('Back to Login',
                           style: TextStyle(fontSize: 16)),
                     ),
+                    const SizedBox(height: 40),
+                    ElevatedButton(
+                      onPressed: () => Navigator.pushNamed(context, '/users'),
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                        ),
+                        minimumSize:
+                            MaterialStateProperty.all(const Size(100, 50)),
+                        shadowColor:
+                            MaterialStateProperty.all(Colors.transparent),
+                      ),
+                      child:
+                          const Text('Users', style: TextStyle(fontSize: 16)),
+                    )
                   ],
                 ),
               ),

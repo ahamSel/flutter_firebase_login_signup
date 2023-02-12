@@ -153,8 +153,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ElevatedButton(
-                    onPressed: () =>
-                        Navigator.of(context).pushNamed('/profile-settings'),
+                    onPressed: () => Navigator.of(context)
+                        .pushReplacementNamed('/profile-settings'),
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all(
                         RoundedRectangleBorder(
@@ -198,6 +198,22 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     child: const Text('Logout', style: TextStyle(fontSize: 16)),
                   ),
+                  const SizedBox(height: 40),
+                  ElevatedButton(
+                    onPressed: () => Navigator.pushNamed(context, '/users'),
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                      ),
+                      minimumSize:
+                          MaterialStateProperty.all(const Size(100, 50)),
+                      shadowColor:
+                          MaterialStateProperty.all(Colors.transparent),
+                    ),
+                    child: const Text('Users', style: TextStyle(fontSize: 16)),
+                  )
                 ],
               ),
             ),

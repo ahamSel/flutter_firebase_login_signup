@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_firebase_login_signup/screens/profile_settings_screen.dart';
 import 'package:flutter_firebase_login_signup/screens/reset_password_screen.dart';
 import 'package:flutter_firebase_login_signup/screens/signup_screen.dart';
+import 'package:flutter_firebase_login_signup/screens/users_screen.dart';
 import 'package:flutter_firebase_login_signup/widgets/loading.dart';
 
 void main() {
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
           '/reset-password': (context) => const ResetPasswordScreen(),
           '/signup': (context) => const SignUpScreen(),
           '/home': (context) => const HomeScreen(),
+          '/users': (context) => const UsersScreen(),
           '/profile-settings': (context) => const ProfileSettingsScreen(),
         },
         title: 'Flutter Firebase Login Signup',

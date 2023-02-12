@@ -18,7 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  bool isLoading = false;
+  bool isLoading = false, isObscure = true;
 
   late String _email, _password;
 
@@ -71,10 +71,21 @@ class _LoginScreenState extends State<LoginScreen> {
                         return null;
                       },
                       onSaved: (value) => _password = value!,
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                      obscureText: isObscure,
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
                         labelText: 'Password',
+                        suffixIcon: Padding(
+                          padding: const EdgeInsets.only(right: 7),
+                          child: IconButton(
+                            icon: Icon(isObscure
+                                ? Icons.visibility
+                                : Icons.visibility_off),
+                            onPressed: () {
+                              setState(() => isObscure = !isObscure);
+                            },
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 35),
@@ -258,6 +269,23 @@ class _LoginScreenState extends State<LoginScreen> {
                                   TextStyle(fontSize: 16, color: Colors.black)),
                         ],
                       ),
+                    ),
+                    const SizedBox(height: 40),
+                    ElevatedButton(
+                      onPressed: () => Navigator.pushNamed(context, '/users'),
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                        ),
+                        minimumSize:
+                            MaterialStateProperty.all(const Size(100, 50)),
+                        shadowColor:
+                            MaterialStateProperty.all(Colors.transparent),
+                      ),
+                      child:
+                          const Text('Users', style: TextStyle(fontSize: 16)),
                     )
                   ],
                 ),

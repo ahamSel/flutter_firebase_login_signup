@@ -23,6 +23,8 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
 
   bool isLoading = false;
 
+  List<bool> isObscures = List.generate(3, (index) => true);
+
   final Map<String, dynamic> _userData = {};
 
   late String _newUsername,
@@ -82,13 +84,8 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                       children: [
                         Row(
                           children: [
-                            Container(
-                              width: 100,
-                              height: 100,
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(50),
-                              ),
+                            const CircleAvatar(
+                              radius: 50,
                             ),
                             const SizedBox(width: 60),
                             Expanded(
@@ -256,7 +253,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                   style: TextStyle(fontSize: 13)),
                               const SizedBox(height: 14),
                               TextFormField(
-                                obscureText: true,
+                                obscureText: isObscures[1],
                                 validator: (value) {
                                   if (value!.isNotEmpty) {
                                     if (value.contains(' ')) {
@@ -274,23 +271,47 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                   }
                                 }),
                                 onChanged: (value) => _newPassword = value,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
+                                decoration: InputDecoration(
+                                  border: const OutlineInputBorder(),
                                   labelText: 'New password',
+                                  suffixIcon: Padding(
+                                    padding: const EdgeInsets.only(right: 7),
+                                    child: IconButton(
+                                      icon: Icon(isObscures[1]
+                                          ? Icons.visibility
+                                          : Icons.visibility_off),
+                                      onPressed: () {
+                                        setState(() =>
+                                            isObscures[1] = !isObscures[1]);
+                                      },
+                                    ),
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 14),
                               TextFormField(
-                                obscureText: true,
+                                obscureText: isObscures[1],
                                 validator: (value) {
                                   if (value != _newPassword) {
                                     return 'Passwords do not match';
                                   }
                                   return null;
                                 },
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
+                                decoration: InputDecoration(
+                                  border: const OutlineInputBorder(),
                                   labelText: 'Confirm new password',
+                                  suffixIcon: Padding(
+                                    padding: const EdgeInsets.only(right: 7),
+                                    child: IconButton(
+                                      icon: Icon(isObscures[1]
+                                          ? Icons.visibility
+                                          : Icons.visibility_off),
+                                      onPressed: () {
+                                        setState(() =>
+                                            isObscures[1] = !isObscures[1]);
+                                      },
+                                    ),
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 35)
@@ -313,15 +334,27 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                   return null;
                                 },
                                 onChanged: (value) => _currentPassword = value,
-                                obscureText: true,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
+                                obscureText: isObscures[0],
+                                decoration: InputDecoration(
+                                  border: const OutlineInputBorder(),
                                   labelText: 'Current password',
+                                  suffixIcon: Padding(
+                                    padding: const EdgeInsets.only(right: 7),
+                                    child: IconButton(
+                                      icon: Icon(isObscures[0]
+                                          ? Icons.visibility
+                                          : Icons.visibility_off),
+                                      onPressed: () {
+                                        setState(() =>
+                                            isObscures[0] = !isObscures[0]);
+                                      },
+                                    ),
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 14),
                               TextFormField(
-                                obscureText: true,
+                                obscureText: isObscures[1],
                                 validator: (value) {
                                   if (value!.isNotEmpty) {
                                     if (value.contains(' ')) {
@@ -339,174 +372,250 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                   }
                                 }),
                                 onChanged: (value) => _newPassword = value,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
+                                decoration: InputDecoration(
+                                  border: const OutlineInputBorder(),
                                   labelText: 'New password',
+                                  suffixIcon: Padding(
+                                    padding: const EdgeInsets.only(right: 7),
+                                    child: IconButton(
+                                      icon: Icon(isObscures[1]
+                                          ? Icons.visibility
+                                          : Icons.visibility_off),
+                                      onPressed: () {
+                                        setState(() =>
+                                            isObscures[1] = !isObscures[1]);
+                                      },
+                                    ),
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 14),
                               TextFormField(
-                                obscureText: true,
+                                obscureText: isObscures[1],
                                 validator: (value) {
                                   if (value != _newPassword) {
                                     return 'Passwords do not match';
                                   }
                                   return null;
                                 },
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
+                                decoration: InputDecoration(
+                                  border: const OutlineInputBorder(),
                                   labelText: 'Confirm new password',
+                                  suffixIcon: Padding(
+                                    padding: const EdgeInsets.only(right: 7),
+                                    child: IconButton(
+                                      icon: Icon(isObscures[1]
+                                          ? Icons.visibility
+                                          : Icons.visibility_off),
+                                      onPressed: () {
+                                        setState(() =>
+                                            isObscures[1] = !isObscures[1]);
+                                      },
+                                    ),
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 35)
                             ],
                           ),
                         Center(
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                _formKey.currentState!.save();
-                                if (!_somethingChanged) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('No changes were made.'),
-                                    ),
-                                  );
-                                  return;
-                                }
-                                setState(() => isLoading = true);
-                                try {
-                                  if (_newPassword.isNotEmpty) {
-                                    try {
-                                      if (_isGoogleUserOnly) {
-                                        final GoogleSignInAccount?
-                                            currentGoogleUser =
-                                            await GoogleSignIn().signIn();
-                                        final GoogleSignInAuthentication?
-                                            googleAuth = await currentGoogleUser
-                                                ?.authentication;
-                                        await _auth.currentUser!
-                                            .reauthenticateWithCredential(
-                                                GoogleAuthProvider.credential(
-                                              idToken: googleAuth?.idToken,
-                                              accessToken:
-                                                  googleAuth?.accessToken,
-                                            ))
-                                            .then((value) => _auth.currentUser!
-                                                .linkWithCredential(
-                                                    EmailAuthProvider
-                                                        .credential(
-                                                            email: _auth
-                                                                .currentUser!
-                                                                .email!,
-                                                            password:
-                                                                _newPassword)));
-                                      } else {
-                                        await _auth.currentUser!
-                                            .reauthenticateWithCredential(
-                                                EmailAuthProvider.credential(
-                                                    email: _auth
-                                                        .currentUser!.email!,
-                                                    password: _currentPassword))
-                                            .then((value) async => await _auth
-                                                .currentUser!
-                                                .updatePassword(_newPassword));
-                                      }
-                                    } on FirebaseAuthException catch (e) {
+                            child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () => Navigator.pushReplacementNamed(
+                                  context, '/home'),
+                              style: ButtonStyle(
+                                shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                ),
+                                minimumSize: MaterialStateProperty.all(
+                                    const Size(100, 50)),
+                                shadowColor: MaterialStateProperty.all(
+                                    Colors.transparent),
+                              ),
+                              child: const Text("Home",
+                                  style: TextStyle(fontSize: 16)),
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  _formKey.currentState!.save();
+                                  if (!_somethingChanged) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('No changes were made.'),
+                                      ),
+                                    );
+                                    return;
+                                  }
+                                  setState(() => isLoading = true);
+                                  try {
+                                    final QuerySnapshot usernamesSnapshot =
+                                        await _firestore
+                                            .collection('users')
+                                            .where('username',
+                                                isEqualTo: _newUsername)
+                                            .get();
+                                    if (usernamesSnapshot.docs.isNotEmpty) {
                                       setState(() => isLoading = false);
-                                      if (e.code == 'wrong-password') {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(const SnackBar(
-                                                content: Text(
-                                                    'Wrong current password provided.')));
-                                      } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(const SnackBar(
-                                                content: Text(
-                                                    'Something went wrong!')));
-                                      }
-                                      return;
-                                    } catch (e) {
-                                      setState(() => isLoading = false);
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
-                                              content:
-                                                  Text('An error occurred!')));
+                                      Future.delayed(
+                                          const Duration(),
+                                          () => ScaffoldMessenger.of(context)
+                                              .showSnackBar(const SnackBar(
+                                                  content: Text(
+                                                      'The username is already in use by another account.'))));
                                       return;
                                     }
+                                    if (_newPassword.isNotEmpty) {
+                                      try {
+                                        if (_isGoogleUserOnly) {
+                                          final GoogleSignInAccount?
+                                              currentGoogleUser =
+                                              await GoogleSignIn().signIn();
+                                          final GoogleSignInAuthentication?
+                                              googleAuth =
+                                              await currentGoogleUser
+                                                  ?.authentication;
+                                          await _auth.currentUser!
+                                              .reauthenticateWithCredential(
+                                                  GoogleAuthProvider.credential(
+                                                idToken: googleAuth?.idToken,
+                                                accessToken:
+                                                    googleAuth?.accessToken,
+                                              ))
+                                              .then((value) => _auth
+                                                  .currentUser!
+                                                  .linkWithCredential(
+                                                      EmailAuthProvider
+                                                          .credential(
+                                                              email: _auth
+                                                                  .currentUser!
+                                                                  .email!,
+                                                              password:
+                                                                  _newPassword)));
+                                        } else {
+                                          await _auth.currentUser!
+                                              .reauthenticateWithCredential(
+                                                  EmailAuthProvider.credential(
+                                                      email: _auth
+                                                          .currentUser!.email!,
+                                                      password:
+                                                          _currentPassword))
+                                              .then((value) async => await _auth
+                                                  .currentUser!
+                                                  .updatePassword(
+                                                      _newPassword));
+                                        }
+                                      } on FirebaseAuthException catch (e) {
+                                        setState(() => isLoading = false);
+                                        if (e.code == 'wrong-password') {
+                                          Future.delayed(
+                                              const Duration(),
+                                              () => ScaffoldMessenger.of(
+                                                      context)
+                                                  .showSnackBar(const SnackBar(
+                                                      content: Text(
+                                                          'Wrong current password provided.'))));
+                                        } else {
+                                          Future.delayed(
+                                              const Duration(),
+                                              () => ScaffoldMessenger.of(
+                                                      context)
+                                                  .showSnackBar(const SnackBar(
+                                                      content: Text(
+                                                          'Something went wrong!'))));
+                                        }
+                                        return;
+                                      } catch (e) {
+                                        setState(() => isLoading = false);
+                                        Future.delayed(
+                                            const Duration(),
+                                            () => ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                                    content: Text(
+                                                        'An error occurred!'))));
+                                        return;
+                                      }
+                                    }
+                                    if (_newUsername.isNotEmpty &&
+                                        _newUsername != _userData['username']) {
+                                      await _firestore
+                                          .collection('users')
+                                          .doc(_auth.currentUser!.uid)
+                                          .update({'username': _newUsername});
+                                    }
+                                    if (_phoneNumber.isNotEmpty &&
+                                        _phoneNumber !=
+                                            _userData['phoneNumber']) {
+                                      await _firestore
+                                          .collection('users')
+                                          .doc(_auth.currentUser!.uid)
+                                          .update(
+                                              {'phoneNumber': _phoneNumber});
+                                    }
+                                    if (_address.join().isNotEmpty &&
+                                        _address.join(', ') !=
+                                            _userData['address']) {
+                                      await _firestore
+                                          .collection('users')
+                                          .doc(_auth.currentUser!.uid)
+                                          .update({
+                                        'address':
+                                            '${_address[0] != '' ? '${_address[0]}, ' : ''}${_address[1]}, ${_address[2]}, ${_address[3] != '' ? '${_address[3]}, ' : ''}${_address[4] != '' ? '${_address[4]}, ' : ''}${_address[5]}'
+                                      });
+                                    }
+                                    setState(() => isLoading = false);
+                                    Future.delayed(const Duration())
+                                        .then((value) => showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return const SimpleDialog(
+                                                  insetPadding:
+                                                      EdgeInsets.all(100),
+                                                  titlePadding:
+                                                      EdgeInsets.all(20),
+                                                  titleTextStyle: TextStyle(
+                                                      fontSize: 18,
+                                                      color: Colors.deepPurple),
+                                                  title: Text(
+                                                      'Profile Updated!',
+                                                      textAlign:
+                                                          TextAlign.center),
+                                                );
+                                              },
+                                            ))
+                                        .then((value) =>
+                                            Navigator.pushReplacementNamed(
+                                                context, '/profile-settings'));
+                                  } catch (e) {
+                                    setState(() => isLoading = false);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content:
+                                                Text('An error occurred!')));
+                                    return;
                                   }
-                                  if (_newUsername.isNotEmpty &&
-                                      _newUsername != _userData['username']) {
-                                    await _firestore
-                                        .collection('users')
-                                        .doc(_auth.currentUser!.uid)
-                                        .update({'username': _newUsername});
-                                  }
-                                  if (_phoneNumber.isNotEmpty &&
-                                      _phoneNumber !=
-                                          _userData['phoneNumber']) {
-                                    await _firestore
-                                        .collection('users')
-                                        .doc(_auth.currentUser!.uid)
-                                        .update({'phoneNumber': _phoneNumber});
-                                  }
-                                  if (_address.join().isNotEmpty &&
-                                      _address.join(', ') !=
-                                          _userData['address']) {
-                                    await _firestore
-                                        .collection('users')
-                                        .doc(_auth.currentUser!.uid)
-                                        .update({
-                                      'address':
-                                          '${_address[0] != '' ? '${_address[0]}, ' : ''}${_address[1]}, ${_address[2]}, ${_address[3] != '' ? '${_address[3]}, ' : ''}${_address[4] != '' ? '${_address[4]}, ' : ''}${_address[5]}'
-                                    });
-                                  }
-                                  setState(() => isLoading = false);
-                                  Future.delayed(const Duration())
-                                      .then((value) => showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return const SimpleDialog(
-                                                insetPadding:
-                                                    EdgeInsets.all(100),
-                                                titlePadding:
-                                                    EdgeInsets.all(20),
-                                                titleTextStyle: TextStyle(
-                                                    fontSize: 18,
-                                                    color: Colors.deepPurple),
-                                                title: Text('Profile Updated!',
-                                                    textAlign:
-                                                        TextAlign.center),
-                                              );
-                                            },
-                                          ))
-                                      .then((value) =>
-                                          Navigator.pushReplacementNamed(
-                                              context, '/profile-settings'));
-                                } catch (e) {
-                                  setState(() => isLoading = false);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text('An error occurred!')));
-                                  return;
                                 }
-                              }
-                            },
-                            style: ButtonStyle(
-                              shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25),
+                              },
+                              style: ButtonStyle(
+                                shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
                                 ),
+                                minimumSize: MaterialStateProperty.all(
+                                    const Size(100, 50)),
+                                shadowColor: MaterialStateProperty.all(
+                                    Colors.transparent),
                               ),
-                              minimumSize: MaterialStateProperty.all(
-                                  const Size(100, 50)),
-                              shadowColor:
-                                  MaterialStateProperty.all(Colors.transparent),
+                              child: const Text("Save changes",
+                                  style: TextStyle(fontSize: 16)),
                             ),
-                            child: const Text("Save changes",
-                                style: TextStyle(fontSize: 16)),
-                          ),
-                        ),
+                          ],
+                        )),
                         const SizedBox(height: 30),
                         Center(
                           child: ElevatedButton(
@@ -655,6 +764,26 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                 style: TextStyle(fontSize: 16)),
                           ),
                         ),
+                        const SizedBox(height: 40),
+                        Center(
+                          child: ElevatedButton(
+                            onPressed: () =>
+                                Navigator.pushNamed(context, '/users'),
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                              ),
+                              minimumSize: MaterialStateProperty.all(
+                                  const Size(100, 50)),
+                              shadowColor:
+                                  MaterialStateProperty.all(Colors.transparent),
+                            ),
+                            child: const Text('Users',
+                                style: TextStyle(fontSize: 16)),
+                          ),
+                        )
                       ]),
                 ),
               ),
